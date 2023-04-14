@@ -1,8 +1,10 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import User from "./components/User";
 
 function App() {
+  const user = { name: "user1", email: "user@gmail.com", age: 25 };
   return (
     <div className="App">
       <header className="App-header">
@@ -18,6 +20,7 @@ function App() {
         >
           Learn React
         </a>
+        <User user={user} />
       </header>
     </div>
   );
