@@ -6,9 +6,11 @@ interface User {
   email: string;
   age: number;
 }
+
 interface Props {
   user: User;
 }
+
 const User = ({ user }: Props) => {
   return (
     <div>
