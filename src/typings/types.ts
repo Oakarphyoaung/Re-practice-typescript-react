@@ -12,3 +12,9 @@ export interface SearchStations {
   startStation: Stations | null;
   endStation: Stations | null;
 }
+
+export interface Bus {
+  id: number;
+  name: string;
+  stations: Stations[];
+}

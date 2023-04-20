@@ -1,13 +1,14 @@
-import React from "react";
-import logo from "./logo.svg";
+import React, { useState } from "react";
+
 import "./App.css";
-import { useState } from "react";
+
 import { Autocomplete, Box, Button, TextField } from "@mui/material";
-import { countries, stations } from "./ultis/data";
+import { buses, countries, stations } from "./ultis/data";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { SearchStations } from "./typings/types";
+import { Bus, SearchStations } from "./typings/types";
+import { dir } from "console";
 
 function App() {
   const [searchStations, setSearchStations] = useState<any>({
@@ -16,16 +17,41 @@ function App() {
   });
   console.log(searchStations);
 
+  const [directBus, setDirectBus] = useState<Bus[] | null>(null);
+
+  const handleClick = () => {
+    console.log(buses);
+
+    //find bus with station A
+    const busWithStartStation = buses.filter((bus) =>
+      bus.stations.find(
+        (station) => station.id === searchStations.startStations.id
+      )
+    );
+    console.log(busWithStartStation);
+
+    // check direct bus
+    const directBus = busWithStartStation.filter((bus) =>
+      bus.stations.find(
+        (station) => station.id === searchStations.endStations?.id
+      )
+    );
+    console.log("this is directBus", directBus);
+
+    // update state with direct bus array
+    setDirectBus(directBus);
+  };
+
   return (
     <Box
       sx={{
-        mt: 20,
+        mt: 5,
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
       }}
     >
-      <Box sx={{ width: 300, margin: "0 auto", textAlign: "center", mb: 10 }}>
+      <Box sx={{ width: 300, margin: "0 auto", textAlign: "center", mb: 2 }}>
         <h1>Station Search</h1>
         <Autocomplete
           disablePortal
@@ -53,6 +79,14 @@ function App() {
           )}
         />
       </Box>
+
+      <Button
+        variant="contained"
+        sx={{ margin: "0 auto", mt: 2, mb: 2 }}
+        onClick={handleClick}
+      >
+        Click
+      </Button>
 
       <Autocomplete
         id="country-select-demo"
@@ -88,20 +122,7 @@ function App() {
           />
         )}
       />
-      <Button
-        variant="contained"
-        sx={{ margin: "0 auto", mt: 2 }}
-        onClick={() => {
-          console.log("hello");
-        }}
-      >
-        Click
-      </Button>
-      <Box sx={{ margin: "0 auto", mt: 5 }}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker />
-        </LocalizationProvider>
-      </Box>
+
       <Box sx={{ margin: "0 auto", mt: 5, mb: 5 }}>
         {searchStations.startStations && (
           <h1>{searchStations.startStations.label}</h1>
@@ -110,6 +131,17 @@ function App() {
         {searchStations.endStations && (
           <h1>{searchStations.endStations.label}</h1>
         )}
+      </Box>
+      <Box sx={{ margin: "0 auto", mt: 2, textAlign: "center" }}>
+        {directBus &&
+          directBus?.map((bus) => {
+            return <h1>{bus.name}</h1>;
+          })}
+      </Box>
+      <Box sx={{ margin: "0 auto", mt: 5 }}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker />
+        </LocalizationProvider>
       </Box>
     </Box>
   );
