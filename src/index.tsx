@@ -6,11 +6,19 @@ import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import BussApp from "./apps/BussApp";
 import PassportApp from "./apps/PassportApp";
+import PassportProvider from "./contexts/PassportAppContexts";
 
 const router = createBrowserRouter([
   { path: "/", element: <App /> },
   { path: "/bus", element: <BussApp /> },
-  { path: "/passport", element: <PassportApp /> },
+  {
+    path: "/passport",
+    element: (
+      <PassportProvider>
+        <PassportApp />
+      </PassportProvider>
+    ),
+  },
 ]);
 
 const root = ReactDOM.createRoot(
